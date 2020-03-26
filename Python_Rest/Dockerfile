@@ -1,14 +1,15 @@
-FROM python:3.7-slim
+FROM python:3.6
 
-RUN apt-get update -y && \
-    apt-get install -y python-pip python-dev
-	
-MKDIR /app
-
+# Create app directory
 WORKDIR /app
 
-COPY . /app
+# Install app dependencies
+COPY /src/requirements.txt ./
 
-ENTRYPOINT [ "python" ]
+RUN pip install -r requirements.txt
 
-CMD [ "app.py" ]
+# Bundle app source
+COPY src /app
+
+EXPOSE 8080
+CMD [ "python", "server.py" ]
